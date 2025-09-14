@@ -1,11 +1,15 @@
 import { LitElement, css, html } from "lit";
-import { customElement, state } from "lit/decorators.js";
-import { renderImage } from "./render.ts";
-import { printImage } from "./printer.ts";
-import icon from "./assets/icon.svg";
+import { customElement, query, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { renderImage } from "../services/render.ts";
+import { printImage } from "../services/printer.ts";
+import icon from "../assets/icon.svg";
 
 @customElement("purrint-app")
 export class PurrintApp extends LitElement {
+  @query("#preview") private previewCanvas!: HTMLCanvasElement;
+  @query("#image-input") private imageInput!: HTMLInputElement;
+
   @state()
   private imageData?: ImageData;
 
@@ -13,10 +17,7 @@ export class PurrintApp extends LitElement {
   private dragOver = false;
 
   private handleFile(file: File) {
-    const previewCanvas = this.shadowRoot!.getElementById(
-      "preview"
-    ) as HTMLCanvasElement;
-    renderImage(file, previewCanvas)
+    renderImage(file, this.previewCanvas)
       .then((imageData) => {
         this.imageData = imageData;
       })
@@ -31,10 +32,6 @@ export class PurrintApp extends LitElement {
     if (input.files?.length) {
       this.handleFile(input.files[0]);
     }
-  }
-
-  private onPreviewClick() {
-    this.shadowRoot!.getElementById("image-input")!.click();
   }
 
   private onDragEnter(event: DragEvent) {
@@ -59,13 +56,8 @@ export class PurrintApp extends LitElement {
     }
   }
 
-  private onPaste = (event: ClipboardEvent) => {
-    const items = event.clipboardData?.items;
-    if (!items) {
-      return;
-    }
-
-    for (const item of Array.from(items)) {
+  private onPaste(event: ClipboardEvent) {
+    for (const item of Array.from(event.clipboardData?.items ?? [])) {
       if (item.type.startsWith("image/")) {
         const file = item.getAsFile();
         if (file) {
@@ -113,25 +105,20 @@ export class PurrintApp extends LitElement {
       <div class="receipt">
         <div
           id="preview-container"
-          class=${[
-            this.imageData ? "has-image" : "",
-            this.dragOver ? "drag-over" : "",
-          ]
-            .join(" ")
-            .trim()}
-          @click=${this.onPreviewClick}
+          class=${classMap({
+            "has-image": !!this.imageData,
+            "drag-over": this.dragOver,
+          })}
+          @click=${() => this.imageInput.click()}
           @dragenter=${this.onDragEnter}
           @dragover=${this.onDragOver}
           @dragleave=${this.onDragLeave}
           @drop=${this.onDrop}
         >
-          <div id="preview-text" style=${this.imageData ? "display: none" : ""}>
+          <div id="preview-text">
             Select image<br />(or paste or drop here)
           </div>
-          <canvas
-            id="preview"
-            style=${this.imageData ? "display: block" : ""}
-          ></canvas>
+          <canvas id="preview"></canvas>
         </div>
       </div>
 
