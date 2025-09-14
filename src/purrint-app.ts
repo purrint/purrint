@@ -195,6 +195,7 @@ export class PurrintApp extends LitElement {
       border-color: #000;
     }
     #preview-text {
+      font-size: 18px;
       text-align: center;
       color: #000;
       width: 100%;
@@ -212,13 +213,13 @@ export class PurrintApp extends LitElement {
       display: none;
     }
     button {
-      font-family: "Noto Sans Mono", monospace;
+      font-family: "Tiny5", monospace;
       background-color: #000;
       color: #fff;
       border: none;
-      padding: 15px 20px;
+      padding: 12px 18px;
       cursor: pointer;
-      font-size: 18px;
+      font-size: 24px;
       letter-spacing: 2px;
       filter: drop-shadow(6px 6px rgba(0, 0, 0, 0.4));
     }

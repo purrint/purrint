@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Tiny5&display=swap');
 
 body {
-  font-family: "Noto Sans Mono", monospace;
+  font-family: "Tiny5", monospace;
   background: linear-gradient(to top, #ffd9fc, #ffe9e3);
   margin: 0;
 }
