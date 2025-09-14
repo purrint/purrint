@@ -1,0 +1,2 @@
+- Use `mise` as a task runner, with tasks defined in `mise.toml`. Do not define tasks in `package.json`.
+- Use `bun` as the JavaScript runtime.

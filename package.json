@@ -9,6 +9,7 @@
   "devDependencies": {
     "@types/web-bluetooth": "^0.0.21",
     "typescript": "~5.8.3",
-    "vite": "^7.1.2"
+    "vite": "^7.1.2",
+    "vite-plugin-pwa": "^1.0.3"
   }
 }

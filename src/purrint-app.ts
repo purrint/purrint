@@ -2,6 +2,7 @@ import { LitElement, css, html } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { renderImage } from "./render.ts";
 import { printImage } from "./printer.ts";
+import icon from "./assets/icon.svg";
 
 @customElement("purrint-app")
 export class PurrintApp extends LitElement {
@@ -100,8 +101,13 @@ export class PurrintApp extends LitElement {
   render() {
     return html`
       <div class="header">
-        <h1>PURRINT</h1>
-        <div class="mascot">≽^•⩊•^≼</div>
+        <img
+          src=${icon}
+          class="mascot shadow"
+          alt="PURRINT"
+          height="150"
+          width="150"
+        />
       </div>
 
       <div class="receipt">
@@ -120,7 +126,7 @@ export class PurrintApp extends LitElement {
           @drop=${this.onDrop}
         >
           <div id="preview-text" style=${this.imageData ? "display: none" : ""}>
-            Click to select image<br />(or drop here or paste from clipboard)
+            Select image<br />(or paste or drop here)
           </div>
           <canvas
             id="preview"
@@ -136,7 +142,7 @@ export class PurrintApp extends LitElement {
         style="display: none;"
         @change=${this.onImageInputChange}
       />
-      <button id="print-button" @click=${this.onPrintClick}>PRINT!</button>
+      <button id="print-button" @click=${this.onPrintClick}>PURRINT!</button>
     `;
   }
 
@@ -158,17 +164,18 @@ export class PurrintApp extends LitElement {
       margin: 0;
     }
     .mascot {
-      font-size: 32px;
       margin-top: 5px;
+      filter: drop-shadow(6px 6px rgba(0, 0, 0, 0.4));
     }
     .receipt {
       background-color: #fff;
       width: 100%;
       max-width: 384px;
       box-sizing: border-box;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
       padding: 20px;
       margin-bottom: 40px;
+      border: 6px solid #000;
+      filter: drop-shadow(6px 6px rgba(0, 0, 0, 0.4));
     }
     #preview-container {
       min-height: 100px;
@@ -178,7 +185,7 @@ export class PurrintApp extends LitElement {
       cursor: pointer;
       box-sizing: border-box;
       background-color: #fff;
-      border: 2px dashed #000;
+      border: 6px dashed #000;
     }
     #preview-container.has-image {
       border-color: transparent;
@@ -213,9 +220,11 @@ export class PurrintApp extends LitElement {
       cursor: pointer;
       font-size: 18px;
       letter-spacing: 2px;
+      filter: drop-shadow(6px 6px rgba(0, 0, 0, 0.4));
     }
     button:hover {
-      opacity: 0.8;
+      filter: drop-shadow(3px 3px rgba(0, 0, 0, 0.4));
+      translate: 3px 3px;
     }
     input[type="file"] {
       display: none;
