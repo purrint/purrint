@@ -1,71 +1,73 @@
-import { LitElement, css, html } from 'lit'
-import { customElement, state } from 'lit/decorators.js'
-import { renderImage } from './render'
-import { printImage } from './printer'
+import { LitElement, css, html } from "lit";
+import { customElement, state } from "lit/decorators.js";
+import { renderImage } from "./render.ts";
+import { printImage } from "./printer.ts";
 
-@customElement('purrint-app')
+@customElement("purrint-app")
 export class PurrintApp extends LitElement {
   @state()
-  private imageData?: ImageData
+  private imageData?: ImageData;
 
   @state()
-  private dragOver = false
+  private dragOver = false;
 
   private handleFile(file: File) {
-    const previewCanvas = this.shadowRoot!.getElementById('preview') as HTMLCanvasElement
+    const previewCanvas = this.shadowRoot!.getElementById(
+      "preview"
+    ) as HTMLCanvasElement;
     renderImage(file, previewCanvas)
-      .then(imageData => {
-        this.imageData = imageData
+      .then((imageData) => {
+        this.imageData = imageData;
       })
-      .catch(error => {
-        console.error('Rendering failed:', error)
-        alert('Rendering failed. See console for details.')
-      })
+      .catch((error) => {
+        console.error("Rendering failed:", error);
+        alert("Rendering failed. See console for details.");
+      });
   }
 
   private onImageInputChange(event: Event) {
-    const input = event.target as HTMLInputElement
+    const input = event.target as HTMLInputElement;
     if (input.files?.length) {
-      this.handleFile(input.files[0])
+      this.handleFile(input.files[0]);
     }
   }
 
   private onPreviewClick() {
-    this.shadowRoot!.getElementById('image-input')!.click()
+    this.shadowRoot!.getElementById("image-input")!.click();
   }
 
   private onDragEnter(event: DragEvent) {
-    event.preventDefault()
-    this.dragOver = true
+    event.preventDefault();
+    this.dragOver = true;
   }
 
   private onDragOver(event: DragEvent) {
-    event.preventDefault()
+    event.preventDefault();
   }
 
   private onDragLeave(event: DragEvent) {
-    event.preventDefault()
-    this.dragOver = false
+    event.preventDefault();
+    this.dragOver = false;
   }
 
   private onDrop(event: DragEvent) {
-    event.preventDefault()
-    this.dragOver = false
+    event.preventDefault();
+    this.dragOver = false;
     if (event.dataTransfer?.files.length) {
-      this.handleFile(event.dataTransfer.files[0])
+      this.handleFile(event.dataTransfer.files[0]);
     }
   }
 
   private onPrintClick() {
     if (!this.imageData) {
-      alert('Please select an image first.')
-      return
+      alert("Please select an image first.");
+      return;
     }
 
-    printImage(this.imageData).catch(error => {
-      console.error('Printing failed:', error)
-      alert('Printing failed. See console for details.')
-    })
+    printImage(this.imageData).catch((error) => {
+      console.error("Printing failed:", error);
+      alert("Printing failed. See console for details.");
+    });
   }
 
   render() {
@@ -78,17 +80,20 @@ export class PurrintApp extends LitElement {
       <div class="receipt">
         <div
           id="preview-container"
-          class=${this.imageData ? 'has-image' : ''}
+          class=${this.imageData ? "has-image" : ""}
           @click=${this.onPreviewClick}
           @dragenter=${this.onDragEnter}
           @dragover=${this.onDragOver}
           @dragleave=${this.onDragLeave}
           @drop=${this.onDrop}
         >
-          <div id="preview-text" style=${this.imageData ? 'display: none' : ''}>
+          <div id="preview-text" style=${this.imageData ? "display: none" : ""}>
             Click to select image<br />(or drop here)
           </div>
-          <canvas id="preview" style=${this.imageData ? 'display: block' : ''}></canvas>
+          <canvas
+            id="preview"
+            style=${this.imageData ? "display: block" : ""}
+          ></canvas>
         </div>
       </div>
 
@@ -100,7 +105,7 @@ export class PurrintApp extends LitElement {
         @change=${this.onImageInputChange}
       />
       <button id="print-button" @click=${this.onPrintClick}>PRINT!</button>
-    `
+    `;
   }
 
   static styles = css`
@@ -168,7 +173,7 @@ export class PurrintApp extends LitElement {
       display: none;
     }
     button {
-      font-family: 'Noto Sans Mono', monospace;
+      font-family: "Noto Sans Mono", monospace;
       background-color: #000;
       color: #fff;
       border: none;
@@ -180,14 +185,14 @@ export class PurrintApp extends LitElement {
     button:hover {
       opacity: 0.8;
     }
-    input[type='file'] {
+    input[type="file"] {
       display: none;
     }
-  `
+  `;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'purrint-app': PurrintApp
+    "purrint-app": PurrintApp;
   }
 }
