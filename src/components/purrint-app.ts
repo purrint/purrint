@@ -16,6 +16,9 @@ export class PurrintApp extends LitElement {
   @state()
   private dragOver = false;
 
+  @state()
+  private isBluetoothAvailable = "bluetooth" in navigator;
+
   private handleFile(file: File) {
     renderImage(file, this.previewCanvas)
       .then((imageData) => {
@@ -66,7 +69,7 @@ export class PurrintApp extends LitElement {
         }
       }
     }
-  };
+  }
 
   private onPrintClick() {
     if (!this.imageData) {
@@ -102,6 +105,16 @@ export class PurrintApp extends LitElement {
         />
       </div>
 
+      ${
+        this.isBluetoothAvailable
+          ? html``
+          : html`
+              <div class="compatibility-notice">
+                Bluetooth is not available in this browser.<br>Try a Chrome-based browser instead.
+              </div>
+            `
+      }
+
       <div class="receipt">
         <div
           id="preview-container"
@@ -129,7 +142,13 @@ export class PurrintApp extends LitElement {
         style="display: none;"
         @change=${this.onImageInputChange}
       />
-      <button id="print-button" @click=${this.onPrintClick}>PURRINT!</button>
+      <button
+        id="print-button"
+        @click=${this.onPrintClick}
+        ?disabled=${!this.isBluetoothAvailable}
+      >
+        PURRINT!
+      </button>
     `;
   }
 
@@ -163,6 +182,15 @@ export class PurrintApp extends LitElement {
       margin-bottom: 40px;
       border: 6px solid #000;
       filter: drop-shadow(6px 6px rgba(0, 0, 0, 0.4));
+    }
+    .compatibility-notice {
+      border: 6px dashed #000;
+      background-color: #fcc;
+      padding: 20px;
+      margin-bottom: 40px;
+      text-align: center;
+      max-width: 384px;
+      box-sizing: border-box;
     }
     #preview-container {
       min-height: 100px;
@@ -213,6 +241,13 @@ export class PurrintApp extends LitElement {
     button:hover {
       filter: drop-shadow(3px 3px rgba(0, 0, 0, 0.4));
       translate: 3px 3px;
+    }
+    button:disabled {
+      background-color: #ccc;
+      color: #666;
+      cursor: not-allowed;
+      filter: none;
+      translate: 0;
     }
     input[type="file"] {
       display: none;
