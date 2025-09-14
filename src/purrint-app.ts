@@ -80,7 +80,12 @@ export class PurrintApp extends LitElement {
       <div class="receipt">
         <div
           id="preview-container"
-          class=${this.imageData ? "has-image" : ""}
+          class=${[
+            this.imageData ? "has-image" : "",
+            this.dragOver ? "drag-over" : "",
+          ]
+            .join(" ")
+            .trim()}
           @click=${this.onPreviewClick}
           @dragenter=${this.onDragEnter}
           @dragover=${this.onDragOver}
