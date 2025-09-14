@@ -58,6 +58,23 @@ export class PurrintApp extends LitElement {
     }
   }
 
+  private onPaste = (event: ClipboardEvent) => {
+    const items = event.clipboardData?.items;
+    if (!items) {
+      return;
+    }
+
+    for (const item of Array.from(items)) {
+      if (item.type.startsWith("image/")) {
+        const file = item.getAsFile();
+        if (file) {
+          this.handleFile(file);
+          return;
+        }
+      }
+    }
+  };
+
   private onPrintClick() {
     if (!this.imageData) {
       alert("Please select an image first.");
@@ -68,6 +85,16 @@ export class PurrintApp extends LitElement {
       console.error("Printing failed:", error);
       alert("Printing failed. See console for details.");
     });
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener("paste", this.onPaste);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener("paste", this.onPaste);
   }
 
   render() {
@@ -93,7 +120,7 @@ export class PurrintApp extends LitElement {
           @drop=${this.onDrop}
         >
           <div id="preview-text" style=${this.imageData ? "display: none" : ""}>
-            Click to select image<br />(or drop here)
+            Click to select image<br />(or drop here or paste from clipboard)
           </div>
           <canvas
             id="preview"
