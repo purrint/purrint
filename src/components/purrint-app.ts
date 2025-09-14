@@ -14,9 +14,6 @@ export class PurrintApp extends LitElement {
   private imageData?: ImageData;
 
   @state()
-  private dragOver = false;
-
-  @state()
   private isBluetoothAvailable = "bluetooth" in navigator;
 
   private handleFile(file: File) {
@@ -37,23 +34,8 @@ export class PurrintApp extends LitElement {
     }
   }
 
-  private onDragEnter(event: DragEvent) {
-    event.preventDefault();
-    this.dragOver = true;
-  }
-
-  private onDragOver(event: DragEvent) {
-    event.preventDefault();
-  }
-
-  private onDragLeave(event: DragEvent) {
-    event.preventDefault();
-    this.dragOver = false;
-  }
-
   private onDrop(event: DragEvent) {
     event.preventDefault();
-    this.dragOver = false;
     if (event.dataTransfer?.files.length) {
       this.handleFile(event.dataTransfer.files[0]);
     }
@@ -120,12 +102,8 @@ export class PurrintApp extends LitElement {
           id="preview-container"
           class=${classMap({
             "has-image": !!this.imageData,
-            "drag-over": this.dragOver,
           })}
           @click=${() => this.imageInput.click()}
-          @dragenter=${this.onDragEnter}
-          @dragover=${this.onDragOver}
-          @dragleave=${this.onDragLeave}
           @drop=${this.onDrop}
         >
           <div id="preview-text">
@@ -204,10 +182,6 @@ export class PurrintApp extends LitElement {
     }
     #preview-container.has-image {
       border-color: transparent;
-    }
-    #preview-container.drag-over {
-      border-style: dashed;
-      border-color: #000;
     }
     #preview-text {
       font-size: 18px;
