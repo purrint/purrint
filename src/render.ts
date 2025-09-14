@@ -19,15 +19,28 @@ export async function renderImage(
 
         ctx.drawImage(img, 0, 0, newWidth, newHeight);
 
-        // Atkinson dithering
         const imageData = ctx.getImageData(0, 0, newWidth, newHeight);
         const data = imageData.data;
         const grayscale = new Float32Array(newWidth * newHeight);
 
+        let min = Infinity;
+        let max = -Infinity;
         for (let i = 0; i < data.length; i += 4) {
-          grayscale[i / 4] = (data[i] + data[i + 1] + data[i + 2]) / 3;
+          const gray = (data[i] + data[i + 1] + data[i + 2]) / 3;
+          grayscale[i / 4] = gray;
+          min = Math.min(min, gray);
+          max = Math.max(max, gray);
         }
 
+        // Normalize to full 0-255 range
+        const range = max - min;
+        if (range > 0) {
+          for (let i = 0; i < grayscale.length; i++) {
+            grayscale[i] = ((grayscale[i] - min) / range) * 255;
+          }
+        }
+
+        // Atkinson dithering
         for (let y = 0; y < newHeight; y++) {
           for (let x = 0; x < newWidth; x++) {
             const index = y * newWidth + x;
