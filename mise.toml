@@ -1,2 +1,17 @@
 [tools]
 bun = "latest"
+
+[settings]
+experimental = true
+
+[hooks]
+postinstall = "bun install"
+
+[tasks.build]
+run = "bun tsc && bun vite build"
+
+[tasks.dev]
+run = "bun vite"
+
+[tasks.preview]
+run = "bun vite preview"
