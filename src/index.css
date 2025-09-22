@@ -3,5 +3,107 @@
 body {
   font-family: "Tiny5", monospace;
   background: linear-gradient(to top, #ffd9fc, #ffe9e3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   margin: 0;
+}
+
+#root {
+  text-align: center;
+}
+
+.mascot {
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 40px;
+  filter: drop-shadow(6px 6px rgba(0, 0, 0, 0.4));
+}
+
+.receipt {
+  background-color: #fff;
+  box-sizing: border-box;
+  padding: 20px;
+  margin-bottom: 40px;
+  border: 6px solid #000;
+  filter: drop-shadow(6px 6px rgba(0, 0, 0, 0.4));
+}
+
+.compatibility-notice {
+  border: 6px dashed #000;
+  background-color: #fcc;
+  padding: 20px;
+  margin-bottom: 40px;
+  text-align: center;
+  max-width: 384px;
+  box-sizing: border-box;
+}
+
+#preview-container {
+  box-sizing: content-box;
+  width: 384px;
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: #fff;
+  border: 6px dashed #000;
+}
+
+#preview-container.has-image {
+  border-color: transparent;
+}
+
+#preview-text {
+  font-size: 18px;
+  text-align: center;
+  color: #000;
+  width: 100%;
+  pointer-events: none;
+}
+
+#preview {
+  display: none;
+  pointer-events: none;
+}
+
+#preview-container.has-image #preview {
+  display: block;
+}
+
+#preview-container.has-image #preview-text {
+  display: none;
+}
+
+button {
+  font-family: "Tiny5", monospace;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 12px 18px;
+  cursor: pointer;
+  font-size: 24px;
+  letter-spacing: 2px;
+  filter: drop-shadow(6px 6px rgba(0, 0, 0, 0.4));
+  margin: auto;
+}
+
+button:hover {
+  filter: drop-shadow(3px 3px rgba(0, 0, 0, 0.4));
+  translate: 3px 3px;
+}
+
+button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  filter: none;
+  translate: 0;
+}
+
+input[type="file"] {
+  display: none;
 }

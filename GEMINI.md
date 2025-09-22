@@ -1,2 +1,3 @@
 - Use `mise` as a task runner, with tasks defined in `mise.toml`. Do not define tasks in `package.json`.
-- Use `bun` as the JavaScript runtime.
+- Use `bun` as the JavaScript runtime, as well as package installer -- so use `bun` instead of `node`, `npm`, `pnpm`, `yarn`, etc.
+- Do not attempt to run `bun run dev` yourself. Just tell me that you're done and I should check out changes.
